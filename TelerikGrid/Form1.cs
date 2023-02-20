@@ -1,3 +1,4 @@
+using System.ComponentModel.Composition.Primitives;
 using System.Data;
 using System.Net.Http.Json;
 using System.Reflection;
@@ -15,7 +16,7 @@ namespace TelerikGrid
         public List<Todo>? TodoList { get; set; }
         public List<Todo>? NewTodoLists { get; set; } = new List<Todo>();
         public List<Todo>? DeletedTodoList { get; set; } = new List<Todo>();
-        public readonly string exportPath = "D:\\samplecode\\TelerikGrid\\TelerikGrid\\Exports\\";
+        public readonly string exportPath = "D:\\samplecode\\Telerik.Grid.Demo\\TelerikGrid\\Exports\\";
         public Form1()
         {
             
@@ -40,6 +41,15 @@ namespace TelerikGrid
             SpreadExportRenderer exportRenderer = new SpreadExportRenderer();
             var file = $"export_{(new Random()).Next(1000)}.xlsx";
             spreadExporter.RunExport($"{exportPath}{file}", exportRenderer);
+            MessageBox.Show($"File Saved to Export//{file}");
+        }
+
+        private void btnPdfExport_Click(object sender, EventArgs e)
+        {
+            GridViewPdfExport pdfExporter = new GridViewPdfExport(radGrid);
+            PdfExportRenderer renderer = new PdfExportRenderer();
+            var file = $"export_{(new Random()).Next(1000)}.pdf";
+            pdfExporter.RunExport($"{exportPath}{file}", renderer);
             MessageBox.Show($"File Saved to Export//{file}");
         }
 
