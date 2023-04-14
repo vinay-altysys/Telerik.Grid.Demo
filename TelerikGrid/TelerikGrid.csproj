@@ -8,9 +8,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="UI.for.WinForms.AllControls.Net70.Trial" Version="2023.1.117" />
+    <Folder Include="Exports\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Exports\" />
+    <PackageReference Include="UI.for.WinForms.AllControls.Net70" Version="2023.1.117" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="RadForm1.cs" />
   </ItemGroup>
 </Project>
