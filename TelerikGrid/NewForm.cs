@@ -67,14 +67,41 @@ namespace TelerikGrid
             //this.radGridView1.AllowSearchRow = true;
             //this.radGridView1.ShowRowHeaderColumn = true;
 
-            //GridViewSummaryItem summaryItem = new GridViewSummaryItem("Count", "{0} Items", GridAggregateFunction.Count);
-            //GridViewSummaryRowItem summaryRowItem = new GridViewSummaryRowItem();
-            //summaryRowItem.Add(summaryItem);
+
+
+            //GridViewSummaryItem summaryItemCounts = new GridViewSummaryItem("id", "{0}", GridAggregateFunction.Count);
+            ////GridViewSummaryItem summaryItemFreight = new GridViewSummaryItem("Freight", "Max Freight = {0}", GridAggregateFunction.Max);
+            //GridViewSummaryRowItem summaryRowItem = new GridViewSummaryRowItem(
+            //    new GridViewSummaryItem[] { summaryItemCounts });
             //this.radGridView1.SummaryRowsBottom.Add(summaryRowItem);
 
-            //this.radGridView1.MasterTemplate.ShowTotals = true;
-            //this.radGridView1.MasterView.SummaryRows[0].PinPosition = PinnedRowPosition.Bottom;
-            //this.radGridView1.MasterTemplate.BottomPinnedRowsMode = GridViewBottomPinnedRowsMode.Fixed;
+
+
+            GridViewSummaryItem summaryItem = new GridViewSummaryItem("id", "Total Rows:{0}", GridAggregateFunction.Count);
+            //CustomSummaryItem summaryItemCustom = new CustomSummaryItem("id", "Checking the row text.", GridAggregateFunction.Var);
+            GridViewSummaryRowItem summaryRowItem = new GridViewSummaryRowItem();
+            summaryRowItem.Add(summaryItem);
+           //summaryRowItem.Add(summaryItemCustom);
+            this.radGridView1.SummaryRowsBottom.Add(summaryRowItem);
+
+            this.radGridView1.MasterTemplate.ShowTotals = true;
+            this.radGridView1.MasterView.SummaryRows[0].PinPosition = PinnedRowPosition.Bottom;
+            this.radGridView1.MasterTemplate.BottomPinnedRowsMode = GridViewBottomPinnedRowsMode.Fixed;
+
+
+
+           // GridViewSummaryItem summaryItem = new GridViewSummaryItem("id", "Total Rows:{0}", GridAggregateFunction.Count);
+            CustomSummaryItem summaryItemCustom = new CustomSummaryItem("id", "The low id are {0}.", GridAggregateFunction.Count);
+            GridViewSummaryRowItem summaryRowItem1 = new GridViewSummaryRowItem();
+            // summaryRowItem.Add(summaryItem);
+            summaryRowItem1.Add(summaryItemCustom);
+            this.radGridView1.SummaryRowsBottom.Add(summaryRowItem1);
+
+            this.radGridView1.MasterTemplate.ShowTotals = true;
+            this.radGridView1.MasterView.SummaryRows[1].PinPosition = PinnedRowPosition.Bottom;
+            this.radGridView1.MasterTemplate.BottomPinnedRowsMode = GridViewBottomPinnedRowsMode.Fixed;
+
+
 
             //GridViewSummaryRowItem summary = new GridViewSummaryRowItem();
             //summary.Add(new GridViewSummaryItem("total", "{0:#,###}", GridAggregateFunction.Sum));
@@ -86,6 +113,16 @@ namespace TelerikGrid
             //this.radGridView1.MasterTemplate.BottomPinnedRowsMode = GridViewBottomPinnedRowsMode.Fixed;
 
         }
+
+
+        //void CustomSummaryItemUsage()
+        //{
+        //    CustomSummaryItem summaryItem = new CustomSummaryItem("id", "Checking the row text.", GridAggregateFunction.Var);
+        //    GridViewSummaryRowItem summaryRowItem = new GridViewSummaryRowItem();
+        //    summaryRowItem.Add(summaryItem);
+        //    this.radGridView1.SummaryRowsTop.Add(summaryRowItem);
+        //}
+
 
         private void btnExcelExport_Click(object sender, EventArgs e)
         {
@@ -132,13 +169,13 @@ namespace TelerikGrid
                 radGridView1.Columns[3].AllowSort = false;
 
                 //
-                radGridView1.Rows.Clear();
-                radGridView1.Rows.AddNew();
-                radGridView1.AllowAddNewRow = false;
-                radGridView1.Columns.ForEach(col =>
-                {
-                    col.DataType = typeof(string);
-                });
+                //radGridView1.Rows.Clear();
+                //radGridView1.Rows.AddNew();
+                //radGridView1.AllowAddNewRow = false;
+                //radGridView1.Columns.ForEach(col =>
+                //{
+                //    col.DataType = typeof(string);
+                //});
             }
         }
 
@@ -157,4 +194,27 @@ namespace TelerikGrid
             LoadGrid(dataSource);
         }
     }
+
+
+
+   
+    public class CustomSummaryItem : GridViewSummaryItem
+    {
+        public CustomSummaryItem(string name,string formatString, GridAggregateFunction aggregate)
+            : base(name, formatString, aggregate)
+        { }
+        public override object Evaluate(IHierarchicalRow row)
+        {
+            int lowFreightsCount = 0;
+            foreach (GridViewRowInfo childRow in row.ChildRows)
+            {
+                if ((int)childRow.Cells["id"].Value > 40)
+                {
+                    lowFreightsCount++;
+                }
+            }
+            return lowFreightsCount;
+        }
+    }
+
 }
